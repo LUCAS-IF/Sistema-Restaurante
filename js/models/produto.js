@@ -11,7 +11,7 @@ export class Produto {
         this.#id = id;
         this.#nome = nome;
         this.#descricao = descricao;
-        this.#preco = preco;
+        this.#preco = parseFloat(preco);
         this.#categoria = categoria;
         this.#imagem = imagem;
     }
@@ -49,7 +49,7 @@ export class Produto {
     }
 
     set preco(novoPreco) {
-        this.#preco = novoPreco;
+        this.#preco = parseFloat(novoPreco);
     }
 
     set categoria(novaCategoria) {

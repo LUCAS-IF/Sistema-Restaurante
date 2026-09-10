@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta
+        name="description"
+        content="Sabor & Arte - Sistema de pedidos de restaurante"
+    >
+
     <title>Sabor & Arte - Restaurante</title>
 
     <link rel="stylesheet" href="css/style.css">
@@ -12,27 +17,357 @@
 
 <body>
 
-    <header>
-        <h1>🍽️ Sabor & Arte</h1>
-        <p>Sistema de Pedidos</p>
+    <!-- CABEÇALHO -->
+    <header class="cabecalho">
+
+        <div class="container">
+
+            <h1>🍽️ Sabor & Arte</h1>
+
+            <p>Sistema de Pedidos</p>
+
+            <nav aria-label="Navegação principal">
+
+                <a href="#inicio">Início</a>
+                <a href="#cardapio">Cardápio</a>
+                <a href="#carrinho">
+                    Carrinho
+                    <span id="contador-carrinho">0</span>
+                </a>
+                <a href="#pedidos">Pedidos</a>
+                <a href="#administracao">Administração</a>
+
+            </nav>
+
+        </div>
+
     </header>
 
+
+    <!-- CONTEÚDO PRINCIPAL -->
     <main>
 
-        <section>
-            <h2>Cardápio</h2>
+        <!-- INÍCIO / CARROSSEL -->
+        <section
+            id="inicio"
+            class="secao destaque"
+        >
 
-            <div id="lista-produtos">
-                <!-- Produtos serão exibidos aqui -->
+            <div class="container">
+
+                <h2>Pratos em destaque</h2>
+
+                <div
+                    id="carrossel"
+                    class="carrossel"
+                    aria-label="Pratos em destaque"
+                >
+
+                    <button
+                        id="btn-anterior"
+                        class="btn-carrossel"
+                        type="button"
+                        aria-label="Prato anterior"
+                    >
+                        ❮
+                    </button>
+
+                    <div
+                        id="slide-carrossel"
+                        class="slide-carrossel"
+                    >
+                        <!-- Preenchido pelo JavaScript -->
+                    </div>
+
+                    <button
+                        id="btn-proximo"
+                        class="btn-carrossel"
+                        type="button"
+                        aria-label="Próximo prato"
+                    >
+                        ❯
+                    </button>
+
+                </div>
+
+                <div
+                    id="indicadores-carrossel"
+                    class="indicadores"
+                    aria-label="Indicadores do carrossel"
+                >
+                </div>
+
             </div>
+
         </section>
+
+
+        <!-- CARDÁPIO -->
+        <section
+            id="cardapio"
+            class="secao"
+        >
+
+            <div class="container">
+
+                <h2>Cardápio</h2>
+
+                <div
+                    id="filtros-categoria"
+                    class="filtros"
+                    aria-label="Filtro por categoria"
+                >
+                    <!-- Botões gerados pelo JavaScript -->
+                </div>
+
+                <div
+                    id="lista-produtos"
+                    class="lista-produtos"
+                >
+                    <!-- Produtos serão exibidos aqui -->
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CARRINHO -->
+        <section
+            id="carrinho"
+            class="secao"
+        >
+
+            <div class="container">
+
+                <h2>Meu Carrinho</h2>
+
+                <div
+                    id="lista-carrinho"
+                    class="lista-carrinho"
+                >
+                    <!-- Itens do carrinho -->
+                </div>
+
+                <div
+                    id="resumo-carrinho"
+                    class="resumo-carrinho"
+                >
+                    <!-- Totais -->
+                </div>
+
+                <button
+                    id="btn-limpar-carrinho"
+                    type="button"
+                >
+                    Limpar carrinho
+                </button>
+
+                <button
+                    id="btn-finalizar"
+                    type="button"
+                >
+                    Finalizar pedido
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- PEDIDOS -->
+        <section
+            id="pedidos"
+            class="secao"
+        >
+
+            <div class="container">
+
+                <h2>Meus Pedidos</h2>
+
+                <div
+                    id="lista-pedidos"
+                    class="lista-pedidos"
+                >
+                    <!-- Pedidos serão exibidos aqui -->
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ADMINISTRAÇÃO / CRUD -->
+        <section
+            id="administracao"
+            class="secao"
+        >
+
+            <div class="container">
+
+                <h2>Administração de Produtos</h2>
+
+                <button
+                    id="btn-novo-produto"
+                    type="button"
+                >
+                    Cadastrar produto
+                </button>
+
+                <div
+                    id="formulario-produto"
+                    class="formulario-container"
+                    hidden
+                >
+
+                    <form id="form-produto">
+
+                        <input
+                            type="hidden"
+                            id="produto-id"
+                        >
+
+                        <div class="campo">
+
+                            <label for="produto-nome">
+                                Nome
+                            </label>
+
+                            <input
+                                type="text"
+                                id="produto-nome"
+                                required
+                            >
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label for="produto-descricao">
+                                Descrição
+                            </label>
+
+                            <textarea
+                                id="produto-descricao"
+                                required
+                            ></textarea>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label for="produto-preco">
+                                Preço
+                            </label>
+
+                            <input
+                                type="number"
+                                id="produto-preco"
+                                min="0.01"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label for="produto-categoria">
+                                Categoria
+                            </label>
+
+                            <input
+                                type="text"
+                                id="produto-categoria"
+                                required
+                            >
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label for="produto-imagem">
+                                Imagem
+                            </label>
+
+                            <input
+                                type="text"
+                                id="produto-imagem"
+                                placeholder="img/nome-da-imagem.jpg"
+                                required
+                            >
+
+                        </div>
+
+                        <div class="acoes-formulario">
+
+                            <button
+                                type="submit"
+                                id="btn-salvar-produto"
+                            >
+                                Salvar produto
+                            </button>
+
+                            <button
+                                type="button"
+                                id="btn-cancelar-produto"
+                            >
+                                Cancelar
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <div
+                    id="lista-administracao"
+                    class="lista-administracao"
+                >
+                    <!-- Produtos administrativos -->
+                </div>
+
+            </div>
+
+        </section>
+
 
     </main>
 
+
+    <!-- MENSAGENS DE FEEDBACK -->
+    <div
+        id="mensagem"
+        class="mensagem"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+
+    <!-- RODAPÉ -->
+    <footer class="rodape">
+
+        <div class="container">
+
+            <p>
+                Sabor & Arte — Sistema de Pedidos
+            </p>
+
+            <p>
+                Projeto acadêmico de Programação Orientada a Objetos
+            </p>
+
+        </div>
+
+    </footer>
+
+
     <script
         type="module"
-        src="js/app.js">
-    </script>
+        src="js/app.js"
+    ></script>
 
 </body>
 

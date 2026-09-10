@@ -8,11 +8,16 @@ export class ItemCarrinho {
     constructor(produto, quantidade = 1) {
 
         if (!(produto instanceof Produto)) {
-            throw new Error("O item deve ser uma instância válida de Produto.");
+            throw new Error(
+                "O item deve ser uma instância válida de Produto."
+            );
         }
 
         this.#produto = produto;
-        this.#quantidade = Math.max(1, parseInt(quantidade) || 1);
+        this.#quantidade = Math.max(
+            1,
+            parseInt(quantidade) || 1
+        );
     }
 
     get produto() {
@@ -37,7 +42,6 @@ export class ItemCarrinho {
     }
 
     toJSON() {
-
         return {
             produto: this.#produto.toJSON(),
             quantidade: this.#quantidade,

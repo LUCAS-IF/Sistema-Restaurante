@@ -11,10 +11,6 @@ export class Carrinho {
 
         this.#itens = [];
 
-        // Opções:
-        // entrega
-        // retirada
-        // local
         this.#tipoEntrega = "retirada";
 
         this.#taxaEntregaValor = 2.50;
@@ -42,7 +38,9 @@ export class Carrinho {
     adicionar(produto) {
 
         if (!(produto instanceof Produto)) {
-            throw new Error("O objeto informado não é um Produto válido.");
+            throw new Error(
+                "O objeto informado não é um Produto válido."
+            );
         }
 
         const itemExistente = this.#itens.find(
@@ -93,7 +91,6 @@ export class Carrinho {
     }
 
     limpar() {
-
         this.#itens = [];
     }
 
@@ -115,7 +112,6 @@ export class Carrinho {
     }
 
     get total() {
-
         return this.subtotal + this.taxa;
     }
 }
