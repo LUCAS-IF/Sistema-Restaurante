@@ -1,213 +1,194 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
 
-    <meta
-      name="description"
-      content="Sabor & Arte - Administração de produtos"
-    />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Administração - Sabor & Arte</title>
+  <meta name="description" content="Sabor & Arte - Administração de produtos" />
 
-    <link rel="stylesheet" href="../css/style.css" />
-  </head>
+  <title>Administração - Sabor & Arte</title>
 
-  <body>
-    <a class="link-pular" href="#conteudo-principal"> Pular para o conteúdo </a>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
 
-    <!-- =====================================================
+<body>
+  <a class="link-pular" href="#conteudo-principal"> Pular para o conteúdo </a>
+
+  <!-- =====================================================
          CABEÇALHO
     ====================================================== -->
 
-    <header class="cabecalho">
-      <div class="container cabecalho-conteudo">
-        <div class="marca">
-          <h1>🍽️ Sabor & Arte</h1>
+  <header class="cabecalho">
+    <div class="container cabecalho-conteudo">
+      <div class="marca">
+        <h1>🍽️ Sabor & Arte</h1>
 
-          <p>Área Administrativa</p>
-        </div>
-
-        <nav class="navegacao" aria-label="Navegação administrativa">
-          <a href="index.html"> ← Voltar ao restaurante </a>
-        </nav>
+        <p>Área Administrativa</p>
       </div>
-    </header>
 
-    <!-- =====================================================
+      <nav class="navegacao" aria-label="Navegação administrativa">
+        <a href="index.html"> ← Voltar ao restaurante </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- =====================================================
          CONTEÚDO
     ====================================================== -->
 
-    <main id="conteudo-principal">
-      <section
-        class="secao secao-administracao"
-        aria-labelledby="titulo-administracao"
-      >
-        <div class="container">
-          <div class="titulo-secao">
-            <span class="subtitulo"> Gerenciamento </span>
+  <main id="conteudo-principal">
+    <section class="secao secao-administracao" aria-labelledby="titulo-administracao">
+      <div class="container">
+        <div class="titulo-secao">
+          <span class="subtitulo"> Gerenciamento </span>
 
-            <h2 id="titulo-administracao">Administração de Produtos</h2>
+          <h2 id="titulo-administracao">Administração de Produtos</h2>
 
-            <p>
-              Cadastre, edite ou remova os produtos disponíveis no cardápio.
-            </p>
-          </div>
+          <p>
+            Cadastre, edite ou remova os produtos disponíveis no cardápio.
+          </p>
+        </div>
 
-          <!-- =================================================
+        <!-- =================================================
                      CABEÇALHO DO CRUD
                 ================================================== -->
 
-          <div class="cabecalho-administracao">
-            <div>
-              <h3>Produtos cadastrados</h3>
+        <div class="cabecalho-administracao">
+          <div>
+            <h3>Produtos cadastrados</h3>
 
-              <p>Gerencie os produtos disponíveis para os clientes.</p>
-            </div>
-
-            <button
-              id="btn-novo-produto"
-              class="btn btn-principal"
-              type="button"
-            >
-              + Cadastrar produto
-            </button>
+            <p>Gerencie os produtos disponíveis para os clientes.</p>
           </div>
 
-          <!-- =================================================
+          <button id="btn-novo-produto" class="btn btn-principal" type="button">
+            + Cadastrar produto
+          </button>
+        </div>
+
+        <!-- =================================================
                      FORMULÁRIO
                 ================================================== -->
 
-          <div id="formulario-produto" class="formulario-container" hidden>
-            <div class="cabecalho-formulario">
-              <span id="texto-formulario" class="subtitulo">
-                Novo produto
-              </span>
+        <div id="formulario-produto" class="formulario-container" hidden>
+          <div class="cabecalho-formulario">
+            <span id="texto-formulario" class="subtitulo">
+              Novo produto
+            </span>
 
-              <h3 id="titulo-formulario">Cadastrar produto</h3>
-            </div>
-
-            <form id="form-produto">
-              <input type="hidden" id="produto-id" />
-
-              <div class="form-grid">
-                <div class="campo">
-                  <label for="produto-nome"> Nome </label>
-
-                  <input
-                    id="produto-nome"
-                    type="text"
-                    placeholder="Ex.: Hambúrguer Artesanal"
-                    maxlength="80"
-                    required
-                  />
-                </div>
-
-                <div class="campo">
-                  <label for="produto-categoria"> Categoria </label>
-
-                  <input
-                    id="produto-categoria"
-                    type="text"
-                    placeholder="Ex.: Lanches"
-                    maxlength="40"
-                    required
-                  />
-                </div>
-
-                <div class="campo">
-                  <label for="produto-preco"> Preço </label>
-
-                  <input
-                    id="produto-preco"
-                    type="number"
-                    min="0.01"
-                    step="0.01"
-                    placeholder="0,00"
-                    required
-                  />
-                </div>
-
-                <div class="campo">
-                  <label for="produto-imagem"> Caminho da imagem </label>
-
-                  <input
-                    id="produto-imagem"
-                    type="text"
-                    placeholder="/img/hamburguer.jpg"
-                    required
-                  />
-
-                  <small> Exemplo: img/hamburguer.jpg </small>
-                </div>
-
-                <div class="campo campo-completo">
-                  <label for="produto-descricao"> Descrição </label>
-
-                  <textarea
-                    id="produto-descricao"
-                    placeholder="Descreva o produto..."
-                    maxlength="200"
-                    required
-                  ></textarea>
-                </div>
-              </div>
-
-              <div class="acoes-formulario">
-                <button
-                  id="btn-salvar-produto"
-                  class="btn btn-principal"
-                  type="submit"
-                >
-                  Salvar produto
-                </button>
-
-                <button
-                  id="btn-cancelar-produto"
-                  class="btn btn-secundario"
-                  type="button"
-                >
-                  Cancelar
-                </button>
-              </div>
-            </form>
+            <h3 id="titulo-formulario">Cadastrar produto</h3>
           </div>
 
-          <!-- =================================================
+          <form id="form-produto">
+            <input type="hidden" id="produto-id" />
+
+            <div class="form-grid">
+              <div class="campo">
+                <label for="produto-nome"> Nome </label>
+
+                <input id="produto-nome" type="text" placeholder="Ex.: Hambúrguer Artesanal" maxlength="80" required />
+              </div>
+
+              <div class="campo">
+                <label for="produto-categoria"> Categoria </label>
+
+                <input id="produto-categoria" type="text" placeholder="Ex.: Lanches" maxlength="40" required />
+              </div>
+
+              <div class="campo">
+                <label for="produto-preco"> Preço </label>
+
+                <input id="produto-preco" type="number" min="0.01" step="0.01" placeholder="0,00" required />
+              </div>
+
+              <div class="campo">
+                <label for="produto-imagem"> Caminho da imagem </label>
+
+                <input id="produto-imagem" type="text" placeholder="/img/hamburguer.jpg" required />
+
+                <small> Exemplo: img/hamburguer.jpg </small>
+              </div>
+
+              <div class="campo campo-completo">
+                <label for="produto-descricao"> Descrição </label>
+
+                <textarea id="produto-descricao" placeholder="Descreva o produto..." maxlength="200"
+                  required></textarea>
+              </div>
+            </div>
+
+            <div class="acoes-formulario">
+              <button id="btn-salvar-produto" class="btn btn-principal" type="submit">
+                Salvar produto
+              </button>
+
+              <button id="btn-cancelar-produto" class="btn btn-secundario" type="button">
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- =================================================
                      LISTA DO CRUD
                 ================================================== -->
 
-          <div id="lista-administracao" class="lista-administracao"></div>
-        </div>
-      </section>
-    </main>
+        <div id="lista-administracao" class="lista-administracao"></div>
 
-    <!-- FEEDBACK -->
+        <!-- =================================================
+              PEDIDOS
+          ================================================== -->
 
-    <div
-      id="mensagem"
-      class="mensagem"
-      role="status"
-      aria-live="polite"
-      aria-atomic="true"
-    ></div>
+        <section class="secao secao-pedidos-administracao" aria-labelledby="titulo-pedidos-administracao">
 
-    <!-- RODAPÉ -->
+          <div class="container">
 
-    <footer class="rodape">
-      <div class="container">
-        <div class="rodape-final">
-          <p>Sabor & Arte — Área administrativa</p>
+            <div class="titulo-secao">
 
-          <p>
-            <a href="index.html"> ← Voltar ao restaurante </a>
-          </p>
-        </div>
+              <span class="subtitulo">
+                Pedidos
+              </span>
+
+              <h2 id="titulo-pedidos-administracao">
+                Pedidos recebidos
+              </h2>
+
+              <p>
+                Acompanhe os pedidos e atualize o status
+                do atendimento.
+              </p>
+
+            </div>
+
+            <div id="lista-pedidos-administracao" class="lista-pedidos"></div>
+
+          </div>
+
+        </section>
       </div>
-    </footer>
+    </section>
+  </main>
 
-    <script type="module" src="../js/admin.js"></script>
-  </body>
+  <!-- FEEDBACK -->
+
+  <div id="mensagem" class="mensagem" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- RODAPÉ -->
+
+  <footer class="rodape">
+    <div class="container">
+      <div class="rodape-final">
+        <p>Sabor & Arte — Área administrativa</p>
+
+        <p>
+          <a href="index.html"> ← Voltar ao restaurante </a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="../js/admin.js"></script>
+</body>
+
 </html>

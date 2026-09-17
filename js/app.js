@@ -921,7 +921,7 @@ function limparCarrinho() {
     renderizarCarrinho();
 
     mostrarMensagem(
-        "Carrinho limpo com sucesso."
+        "Carrinho limpo."
     );
 
 }
@@ -1142,7 +1142,7 @@ function finalizarPedido(evento) {
         fecharCheckout();
 
         mostrarMensagem(
-            `Pedido #${pedido.id} realizado com sucesso!`
+            `Pedido #${pedido.id} realizado!`
         );
 
         document
@@ -1577,18 +1577,13 @@ btnCancelarCheckout.addEventListener(
 function iniciarAplicacao() {
 
     carregarProdutosIniciais();
-
     carregarCarrinho();
-
     configurarTipoEntrega();
-
     renderizarFiltros();
-
     renderizarProdutos();
-
     renderizarCarrossel();
-
     renderizarCarrinho();
+    renderizarPedidos();
 
 }
 

@@ -84,6 +84,10 @@ const tituloFormulario =
         "titulo-formulario"
     );
 
+const listaPedidosAdministracao =
+    document.getElementById(
+        "lista-pedidos-administracao"
+    );
 
 // =========================================================
 // MENSAGENS
@@ -446,7 +450,7 @@ function salvarProduto(
 
 
             mostrarMensagem(
-                "Produto atualizado com sucesso."
+                "Produto atualizado."
             );
 
         } else {
@@ -488,7 +492,7 @@ function salvarProduto(
 
 
             mostrarMensagem(
-                "Produto cadastrado com sucesso."
+                "Produto cadastrado."
             );
 
         }
@@ -572,7 +576,7 @@ function excluirProduto(
 
 
         mostrarMensagem(
-            "Produto excluído com sucesso."
+            "Produto excluído."
         );
 
 
@@ -760,6 +764,328 @@ function renderizarProdutos() {
 
 }
 
+// =========================================================
+// PEDIDOS
+// =========================================================
+
+function renderizarPedidos() {
+
+    const pedidos =
+        gerenciador.listarPedidos();
+
+    listaPedidosAdministracao.innerHTML = "";
+
+    if (pedidos.length === 0) {
+
+        listaPedidosAdministracao.innerHTML = `
+            <div class="estado-vazio">
+
+                <h3>
+                    Nenhum pedido registrado
+                </h3>
+
+                <p>
+                    Os pedidos realizados pelos clientes
+                    aparecerão aqui.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    pedidos
+        .slice()
+        .reverse()
+        .forEach(
+            (pedido) => {
+
+                const card =
+                    document.createElement(
+                        "article"
+                    );
+
+                card.className =
+                    "card-pedido";
+
+                const itensHtml =
+                    pedido.itens
+                        .map(
+                            (item) => `
+                                <li>
+                                    ${item.produto.nome}
+                                    × ${item.quantidade}
+                                </li>
+                            `
+                        )
+                        .join("");
+
+                let tipoEntregaTexto =
+                    "Retirada";
+
+                if (
+                    pedido.tipoEntrega ===
+                    "local"
+                ) {
+
+                    tipoEntregaTexto =
+                        "Consumo no local";
+
+                } else if (
+                    pedido.tipoEntrega ===
+                    "entrega"
+                ) {
+
+                    tipoEntregaTexto =
+                        "Delivery";
+
+                }
+
+                card.innerHTML = `
+                    <div class="card-pedido-cabecalho">
+
+                        <div>
+
+                            <span class="subtitulo">
+                                Pedido #${pedido.id}
+                            </span>
+
+                            <h3>
+                                ${pedido.cliente}
+                            </h3>
+
+                            <span class="card-pedido-data">
+                                ${pedido.data}
+                            </span>
+
+                        </div>
+
+                        <span class="status-pedido">
+                            ${pedido.status}
+                        </span>
+
+                    </div>
+
+                    <p>
+                        <strong>
+                            Recebimento:
+                        </strong>
+
+                        ${tipoEntregaTexto}
+                    </p>
+
+                    <div class="pedido-itens-admin">
+
+                        <strong>
+                            Itens:
+                        </strong>
+
+                        <ul>
+                            ${itensHtml}
+                        </ul>
+
+                    </div>
+
+                    <div class="resumo-linha">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong>
+                            ${formatarMoeda(
+                                pedido.total
+                            )}
+                        </strong>
+
+                    </div>
+
+                    <div class="acoes-administracao">
+
+                        <label>
+                            <span class="sr-only">
+                                Status do pedido
+                            </span>
+
+                            <select
+                                class="select-status"
+                                data-status="${pedido.id}"
+                            >
+
+                                <option
+                                    value="Realizado"
+                                    ${pedido.status === "Realizado" ? "selected" : ""}
+                                >
+                                    Realizado
+                                </option>
+
+                                <option
+                                    value="Em preparo"
+                                    ${pedido.status === "Em preparo" ? "selected" : ""}
+                                >
+                                    Em preparo
+                                </option>
+
+                                <option
+                                    value="Pronto"
+                                    ${pedido.status === "Pronto" ? "selected" : ""}
+                                >
+                                    Pronto
+                                </option>
+
+                                <option
+                                    value="Entregue"
+                                    ${pedido.status === "Entregue" ? "selected" : ""}
+                                >
+                                    Entregue
+                                </option>
+
+                                <option
+                                    value="Cancelado"
+                                    ${pedido.status === "Cancelado" ? "selected" : ""}
+                                >
+                                    Cancelado
+                                </option>
+
+                            </select>
+
+                        </label>
+
+                        <button
+                            class="btn-excluir"
+                            type="button"
+                            data-excluir-pedido="${pedido.id}"
+                        >
+                            Excluir pedido
+                        </button>
+
+                    </div>
+                `;
+
+                const selectStatus =
+                    card.querySelector(
+                        "[data-status]"
+                    );
+
+                selectStatus.addEventListener(
+                    "change",
+                    () => {
+
+                        alterarStatusPedido(
+                            pedido.id,
+                            selectStatus.value
+                        );
+
+                    }
+                );
+
+                const btnExcluir =
+                    card.querySelector(
+                        "[data-excluir-pedido]"
+                    );
+
+                btnExcluir.addEventListener(
+                    "click",
+                    () => {
+
+                        excluirPedido(
+                            pedido.id
+                        );
+
+                    }
+                );
+
+                listaPedidosAdministracao.appendChild(
+                    card
+                );
+
+            }
+        );
+}
+
+function alterarStatusPedido(
+    id,
+    novoStatus
+) {
+
+    try {
+
+        gerenciador.atualizarStatusPedido(
+            id,
+            novoStatus
+        );
+
+        renderizarPedidos();
+
+        mostrarMensagem(
+            "Status do pedido atualizado."
+        );
+
+    } catch (erro) {
+
+        console.error(erro);
+
+        mostrarMensagem(
+            erro.message ||
+            "Não foi possível atualizar o pedido.",
+            "erro"
+        );
+
+    }
+}
+
+function excluirPedido(id) {
+
+    const pedido =
+        gerenciador.buscarPedidoPorId(
+            id
+        );
+
+    if (!pedido) {
+
+        mostrarMensagem(
+            "Pedido não encontrado.",
+            "erro"
+        );
+
+        return;
+    }
+
+    const confirmou =
+        window.confirm(
+            `Deseja excluir o pedido #${pedido.id}?`
+        );
+
+    if (!confirmou) {
+        return;
+    }
+
+    try {
+
+        gerenciador.removerPedido(
+            id
+        );
+
+        renderizarPedidos();
+
+        mostrarMensagem(
+            "Pedido excluído."
+        );
+
+    } catch (erro) {
+
+        console.error(erro);
+
+        mostrarMensagem(
+            erro.message ||
+            "Não foi possível excluir o pedido.",
+            "erro"
+        );
+
+    }
+}
+
 
 // =========================================================
 // EVENTOS
@@ -790,3 +1116,5 @@ formulario.addEventListener(
 inicializarProdutos();
 
 renderizarProdutos();
+
+renderizarPedidos();
