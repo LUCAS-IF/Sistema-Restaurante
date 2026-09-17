@@ -1,283 +1,298 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
 
-    <meta
-      name="description"
-      content="Sabor & Arte - Sistema de pedidos de restaurante"
-    />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Sabor & Arte - Restaurante</title>
+  <meta name="description" content="Sabor & Arte - Sistema de pedidos de restaurante" />
 
-    <link rel="stylesheet" href="../css/style.css" />
-  </head>
+  <title>Sabor & Arte - Restaurante</title>
 
-  <body>
-    <a class="link-pular" href="#conteudo-principal"> Pular para o conteúdo </a>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
 
-    <!-- =====================================================
+<body>
+  <a class="link-pular" href="#conteudo-principal"> Pular para o conteúdo </a>
+
+  <!-- =====================================================
          CABEÇALHO
     ====================================================== -->
 
-    <header class="cabecalho">
-      <div class="container cabecalho-conteudo">
-        <div class="marca">
-          <h1>🍽️ Sabor & Arte</h1>
+  <header class="cabecalho">
+    <div class="container cabecalho-conteudo">
+      <div class="marca">
+        <h1>🍽️ Sabor & Arte</h1>
 
-          <p>Restaurante & Sistema de Pedidos</p>
+        <p>Restaurante & Sistema de Pedidos</p>
+      </div>
+
+      <nav class="navegacao" aria-label="Navegação principal">
+        <a href="#inicio"> Início </a>
+
+        <a href="#cardapio"> Cardápio </a>
+
+        <a href="#carrinho">
+          Carrinho
+          <span id="contador-carrinho" class="contador-carrinho"> 0 </span>
+        </a>
+
+        <a href="#pedidos"> Meus pedidos </a>
+
+        <a href="admin.html" class="link-administracao"> Administração </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- =====================================================
+         CONTEÚDO PRINCIPAL
+    ====================================================== -->
+
+  <main id="conteudo-principal">
+    <!-- =================================================
+             INÍCIO
+        ================================================== -->
+
+    <section id="inicio" class="secao secao-destaque" aria-labelledby="titulo-destaques">
+      <div class="container">
+        <div class="titulo-secao">
+          <span class="subtitulo"> Experimente nossos pratos </span>
+
+          <h2 id="titulo-destaques">Pratos em destaque</h2>
+
+          <p>Escolha seu favorito e faça seu pedido.</p>
         </div>
 
-        <nav class="navegacao" aria-label="Navegação principal">
+        <div id="carrossel" class="carrossel" aria-label="Pratos em destaque">
+          <button id="btn-anterior" class="btn-carrossel" type="button" aria-label="Prato anterior">
+            ❮
+          </button>
+
+          <div id="slide-carrossel" class="slide-carrossel"></div>
+
+          <button id="btn-proximo" class="btn-carrossel" type="button" aria-label="Próximo prato">
+            ❯
+          </button>
+        </div>
+
+        <div id="indicadores-carrossel" class="indicadores" aria-label="Selecionar prato em destaque"></div>
+      </div>
+    </section>
+
+    <!-- =================================================
+             CARDÁPIO
+        ================================================== -->
+
+    <section id="cardapio" class="secao" aria-labelledby="titulo-cardapio">
+      <div class="container">
+        <div class="titulo-secao">
+          <span class="subtitulo"> Escolha seu prato </span>
+
+          <h2 id="titulo-cardapio">Nosso Cardápio</h2>
+
+          <p>Encontre seu prato favorito por categoria.</p>
+        </div>
+
+        <div id="filtros-categoria" class="filtros" aria-label="Categorias do cardápio"></div>
+
+        <div id="lista-produtos" class="lista-produtos"></div>
+      </div>
+    </section>
+
+    <!-- =================================================
+             CARRINHO
+        ================================================== -->
+
+    <section id="carrinho" class="secao secao-carrinho" aria-labelledby="titulo-carrinho">
+      <div class="container">
+        <div class="titulo-secao">
+          <span class="subtitulo"> Seu pedido </span>
+
+          <h2 id="titulo-carrinho">Meu Carrinho</h2>
+
+          <p>Confira os produtos antes de finalizar.</p>
+        </div>
+
+        <div id="lista-carrinho" class="lista-carrinho"></div>
+
+        <!-- =================================================
+                     TIPO DE ENTREGA
+                ================================================== -->
+
+        <div class="opcoes-entrega">
+          <h3>Como deseja receber seu pedido?</h3>
+
+          <div class="opcoes-entrega-grid">
+            <label class="opcao-entrega">
+              <input type="radio" name="tipo-entrega" value="retirada" checked />
+
+              <span class="opcao-entrega-conteudo">
+                <strong> Retirada </strong>
+
+                <small> Retire no restaurante </small>
+              </span>
+            </label>
+
+            <label class="opcao-entrega">
+              <input type="radio" name="tipo-entrega" value="local" />
+
+              <span class="opcao-entrega-conteudo">
+                <strong> Consumo no local </strong>
+
+                <small> Consuma seu pedido no restaurante </small>
+              </span>
+            </label>
+
+            <label class="opcao-entrega">
+              <input type="radio" name="tipo-entrega" value="entrega" />
+
+              <span class="opcao-entrega-conteudo">
+                <strong> Delivery </strong>
+
+                <small> Taxa de entrega: R$ 2,50 </small>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- RESUMO -->
+
+        <div id="resumo-carrinho" class="resumo-carrinho"></div>
+
+        <div class="acoes-carrinho">
+          <button id="btn-limpar-carrinho" class="btn btn-secundario" type="button">
+            Limpar carrinho
+          </button>
+
+          <button id="btn-finalizar" class="btn btn-principal" type="button">
+            Finalizar pedido
+          </button>
+        </div>
+
+        <dialog id="modal-checkout" class="modal-checkout" aria-labelledby="titulo-checkout">
+          <div class="modal-conteudo">
+
+            <div class="modal-cabecalho">
+
+              <div>
+                <span class="subtitulo">
+                  Última etapa
+                </span>
+
+                <h2 id="titulo-checkout">
+                  Finalizar pedido
+                </h2>
+
+                <p>
+                  Confira seus dados e o resumo do pedido.
+                </p>
+              </div>
+
+              <button id="btn-fechar-checkout" class="btn-fechar" type="button"
+                aria-label="Fechar finalização do pedido">
+                ×
+              </button>
+
+            </div>
+
+            <form id="form-checkout">
+
+              <div class="campo">
+                <label for="nome-cliente">
+                  Nome completo
+                </label>
+
+                <input id="nome-cliente" type="text" maxlength="100" placeholder="Digite seu nome" autocomplete="name"
+                  required>
+              </div>
+
+              <div id="resumo-checkout" class="resumo-checkout"></div>
+
+              <div class="acoes-formulario">
+
+                <button id="btn-cancelar-checkout" class="btn btn-secundario" type="button">
+                  Voltar ao carrinho
+                </button>
+
+                <button class="btn btn-principal" type="submit">
+                  Confirmar pedido
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+        </dialog>
+
+      </div>
+    </section>
+
+    <!-- =================================================
+             PEDIDOS
+        ================================================== -->
+
+    <section id="pedidos" class="secao" aria-labelledby="titulo-pedidos">
+      <div class="container">
+        <div class="titulo-secao">
+          <span class="subtitulo"> Acompanhe suas compras </span>
+
+          <h2 id="titulo-pedidos">Meus Pedidos</h2>
+
+          <p>Consulte seus pedidos realizados.</p>
+        </div>
+
+        <div id="lista-pedidos" class="lista-pedidos"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================
+         MENSAGEM DE FEEDBACK
+    ====================================================== -->
+
+  <div id="mensagem" class="mensagem" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- =====================================================
+         RODAPÉ
+    ====================================================== -->
+
+  <footer class="rodape">
+    <div class="container">
+      <div class="rodape-conteudo">
+        <div>
+          <h2>🍽️ Sabor & Arte</h2>
+
+          <p>Sistema de pedidos de restaurante.</p>
+        </div>
+
+        <div>
+          <h3>Navegação</h3>
+
           <a href="#inicio"> Início </a>
 
           <a href="#cardapio"> Cardápio </a>
 
-          <a href="#carrinho">
-            Carrinho
-            <span id="contador-carrinho" class="contador-carrinho"> 0 </span>
-          </a>
+          <a href="#carrinho"> Carrinho </a>
 
-          <a href="#pedidos"> Meus pedidos </a>
-
-          <a href="admin.html" class="link-administracao"> Administração </a>
-        </nav>
-      </div>
-    </header>
-
-    <!-- =====================================================
-         CONTEÚDO PRINCIPAL
-    ====================================================== -->
-
-    <main id="conteudo-principal">
-      <!-- =================================================
-             INÍCIO
-        ================================================== -->
-
-      <section
-        id="inicio"
-        class="secao secao-destaque"
-        aria-labelledby="titulo-destaques"
-      >
-        <div class="container">
-          <div class="titulo-secao">
-            <span class="subtitulo"> Experimente nossos pratos </span>
-
-            <h2 id="titulo-destaques">Pratos em destaque</h2>
-
-            <p>Escolha seu favorito e faça seu pedido.</p>
-          </div>
-
-          <div id="carrossel" class="carrossel" aria-label="Pratos em destaque">
-            <button
-              id="btn-anterior"
-              class="btn-carrossel"
-              type="button"
-              aria-label="Prato anterior"
-            >
-              ❮
-            </button>
-
-            <div id="slide-carrossel" class="slide-carrossel"></div>
-
-            <button
-              id="btn-proximo"
-              class="btn-carrossel"
-              type="button"
-              aria-label="Próximo prato"
-            >
-              ❯
-            </button>
-          </div>
-
-          <div
-            id="indicadores-carrossel"
-            class="indicadores"
-            aria-label="Selecionar prato em destaque"
-          ></div>
-        </div>
-      </section>
-
-      <!-- =================================================
-             CARDÁPIO
-        ================================================== -->
-
-      <section id="cardapio" class="secao" aria-labelledby="titulo-cardapio">
-        <div class="container">
-          <div class="titulo-secao">
-            <span class="subtitulo"> Escolha seu prato </span>
-
-            <h2 id="titulo-cardapio">Nosso Cardápio</h2>
-
-            <p>Encontre seu prato favorito por categoria.</p>
-          </div>
-
-          <div
-            id="filtros-categoria"
-            class="filtros"
-            aria-label="Categorias do cardápio"
-          ></div>
-
-          <div id="lista-produtos" class="lista-produtos"></div>
-        </div>
-      </section>
-
-      <!-- =================================================
-             CARRINHO
-        ================================================== -->
-
-      <section
-        id="carrinho"
-        class="secao secao-carrinho"
-        aria-labelledby="titulo-carrinho"
-      >
-        <div class="container">
-          <div class="titulo-secao">
-            <span class="subtitulo"> Seu pedido </span>
-
-            <h2 id="titulo-carrinho">Meu Carrinho</h2>
-
-            <p>Confira os produtos antes de finalizar.</p>
-          </div>
-
-          <div id="lista-carrinho" class="lista-carrinho"></div>
-
-          <!-- =================================================
-                     TIPO DE ENTREGA
-                ================================================== -->
-
-          <div class="opcoes-entrega">
-            <h3>Como deseja receber seu pedido?</h3>
-
-            <div class="opcoes-entrega-grid">
-              <label class="opcao-entrega">
-                <input
-                  type="radio"
-                  name="tipo-entrega"
-                  value="retirada"
-                  checked
-                />
-
-                <span class="opcao-entrega-conteudo">
-                  <strong> Retirada </strong>
-
-                  <small> Retire no restaurante </small>
-                </span>
-              </label>
-
-              <label class="opcao-entrega">
-                <input type="radio" name="tipo-entrega" value="local" />
-
-                <span class="opcao-entrega-conteudo">
-                  <strong> Consumo no local </strong>
-
-                  <small> Consuma seu pedido no restaurante </small>
-                </span>
-              </label>
-
-              <label class="opcao-entrega">
-                <input type="radio" name="tipo-entrega" value="entrega" />
-
-                <span class="opcao-entrega-conteudo">
-                  <strong> Delivery </strong>
-
-                  <small> Taxa de entrega: R$ 2,50 </small>
-                </span>
-              </label>
-            </div>
-          </div>
-
-          <!-- RESUMO -->
-
-          <div id="resumo-carrinho" class="resumo-carrinho"></div>
-
-          <div class="acoes-carrinho">
-            <button
-              id="btn-limpar-carrinho"
-              class="btn btn-secundario"
-              type="button"
-            >
-              Limpar carrinho
-            </button>
-
-            <button id="btn-finalizar" class="btn btn-principal" type="button">
-              Finalizar pedido
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- =================================================
-             PEDIDOS
-        ================================================== -->
-
-      <section id="pedidos" class="secao" aria-labelledby="titulo-pedidos">
-        <div class="container">
-          <div class="titulo-secao">
-            <span class="subtitulo"> Acompanhe suas compras </span>
-
-            <h2 id="titulo-pedidos">Meus Pedidos</h2>
-
-            <p>Consulte seus pedidos realizados.</p>
-          </div>
-
-          <div id="lista-pedidos" class="lista-pedidos"></div>
-        </div>
-      </section>
-    </main>
-
-    <!-- =====================================================
-         MENSAGEM DE FEEDBACK
-    ====================================================== -->
-
-    <div
-      id="mensagem"
-      class="mensagem"
-      role="status"
-      aria-live="polite"
-      aria-atomic="true"
-    ></div>
-
-    <!-- =====================================================
-         RODAPÉ
-    ====================================================== -->
-
-    <footer class="rodape">
-      <div class="container">
-        <div class="rodape-conteudo">
-          <div>
-            <h2>🍽️ Sabor & Arte</h2>
-
-            <p>Sistema de pedidos de restaurante.</p>
-          </div>
-
-          <div>
-            <h3>Navegação</h3>
-
-            <a href="#inicio"> Início </a>
-
-            <a href="#cardapio"> Cardápio </a>
-
-            <a href="#carrinho"> Carrinho </a>
-
-            <a href="#pedidos"> Pedidos </a>
-          </div>
-
-          <div>
-            <h3>Administração</h3>
-
-            <a href="admin.html"> Área administrativa </a>
-          </div>
+          <a href="#pedidos"> Pedidos </a>
         </div>
 
-        <div class="rodape-final">
-          <p>Sabor & Arte — Projeto acadêmico</p>
+        <div>
+          <h3>Administração</h3>
+
+          <a href="admin.html"> Área administrativa </a>
         </div>
       </div>
-    </footer>
 
-    <script type="module" src="../js/app.js"></script>
-  </body>
+      <div class="rodape-final">
+        <p>Sabor & Arte — Projeto acadêmico</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="../js/app.js"></script>
+</body>
+
 </html>

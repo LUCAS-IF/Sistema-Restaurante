@@ -1759,3 +1759,156 @@ a {
         animation: none !important;
     }
 }
+
+/* =========================================================
+   CHECKOUT
+========================================================= */
+
+.modal-checkout {
+    width: min(680px, calc(100% - 30px));
+
+    max-width: 680px;
+
+    border: none;
+
+    border-radius: var(--raio-medio);
+
+    padding: 0;
+
+    background: transparent;
+}
+
+
+.modal-checkout::backdrop {
+    background-color: rgba(0, 0, 0, 0.65);
+}
+
+
+.modal-conteudo {
+    padding: 28px;
+
+    border-radius: var(--raio-medio);
+
+    background-color: #ffffff;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+
+.modal-cabecalho {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 24px;
+}
+
+
+.modal-cabecalho h2 {
+    margin-bottom: 6px;
+}
+
+
+.modal-cabecalho p {
+    margin-bottom: 0;
+
+    color: var(--cor-texto-secundario);
+}
+
+
+.btn-fechar {
+    width: 42px;
+
+    height: 42px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background-color: #eeeeee;
+
+    font-size: 1.7rem;
+
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+
+.btn-fechar:hover {
+    opacity: 0.75;
+}
+
+
+.resumo-checkout {
+    margin-top: 24px;
+
+    padding: 18px;
+
+    border:
+        1px solid var(--cor-borda);
+
+    border-radius: var(--raio-medio);
+
+    background-color: #fafafa;
+}
+
+
+.resumo-checkout-item {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 8px 0;
+}
+
+
+.resumo-checkout-total {
+    display: flex;
+
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 10px;
+    padding-top: 14px;
+    border-top:
+        2px solid var(--cor-borda);
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+
+.modal-checkout .acoes-formulario {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+
+@media (max-width: 600px) {
+
+    .modal-conteudo {
+        padding: 20px;
+    }
+
+    .modal-cabecalho {
+        flex-direction: column;
+    }
+
+    .modal-checkout .acoes-formulario {
+        flex-direction: column;
+    }
+
+    .modal-checkout .acoes-formulario .btn {
+        width: 100%;
+    }
+
+}

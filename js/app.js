@@ -1,16 +1,16 @@
 import { Produto } from "./models/Produto.js";
 import { Carrinho } from "./models/Carrinho.js";
+import { Pedido } from "./models/Pedido.js";
 import { Gerenciador } from "./Gerenciador.js";
-
 
 // =========================================================
 // OBJETOS PRINCIPAIS
 // =========================================================
 
 const gerenciador = new Gerenciador();
-
 const carrinho = new Carrinho();
 
+const CHAVE_CARRINHO ="restaurante_carrinho";
 
 // =========================================================
 // ELEMENTOS DA PÁGINA
@@ -48,6 +48,46 @@ const btnProximo =
 
 const btnLimparCarrinho =
     document.getElementById("btn-limpar-carrinho");
+
+const btnFinalizar =
+    document.getElementById(
+        "btn-finalizar"
+    );
+
+const modalCheckout =
+    document.getElementById(
+        "modal-checkout"
+    );
+
+const formCheckout =
+    document.getElementById(
+        "form-checkout"
+    );
+
+const campoNomeCliente =
+    document.getElementById(
+        "nome-cliente"
+    );
+
+const resumoCheckout =
+    document.getElementById(
+        "resumo-checkout"
+    );
+
+const btnFecharCheckout =
+    document.getElementById(
+        "btn-fechar-checkout"
+    );
+
+const btnCancelarCheckout =
+    document.getElementById(
+        "btn-cancelar-checkout"
+    );
+
+const listaPedidos =
+    document.getElementById(
+        "lista-pedidos"
+    );
 
 
 // =========================================================
@@ -175,6 +215,122 @@ function mostrarMensagem(
         },
         3000
     );
+}
+
+// =========================================================
+// PERSISTÊNCIA DO CARRINHO
+// =========================================================
+
+function salvarCarrinho() {
+
+    const dados = {
+
+        tipoEntrega:
+            carrinho.tipoEntrega,
+
+        itens:
+            carrinho.itens.map(
+                (item) => ({
+
+                    produtoId:
+                        item.produto.id,
+
+                    quantidade:
+                        item.quantidade
+
+                })
+            )
+    };
+
+    localStorage.setItem(
+        CHAVE_CARRINHO,
+        JSON.stringify(dados)
+    );
+}
+
+
+function carregarCarrinho() {
+
+    const dadosSalvos =
+        localStorage.getItem(
+            CHAVE_CARRINHO
+        );
+
+    if (!dadosSalvos) {
+        return;
+    }
+
+    try {
+
+        const dados =
+            JSON.parse(
+                dadosSalvos
+            );
+
+        if (dados.tipoEntrega) {
+
+            carrinho.tipoEntrega =
+                dados.tipoEntrega;
+
+        }
+
+        if (!Array.isArray(dados.itens)) {
+            return;
+        }
+
+        dados.itens.forEach(
+            (itemSalvo) => {
+
+                const produto =
+                    gerenciador.buscarProdutoPorId(
+                        itemSalvo.produtoId
+                    );
+
+                if (!produto) {
+                    return;
+                }
+
+                const quantidade =
+                    Number(
+                        itemSalvo.quantidade
+                    );
+
+                if (
+                    !Number.isInteger(
+                        quantidade
+                    ) ||
+                    quantidade <= 0
+                ) {
+                    return;
+                }
+
+                let contador = 0;
+
+                while (
+                    contador < quantidade
+                ) {
+
+                    carrinho.adicionar(
+                        produto
+                    );
+
+                    contador++;
+                }
+
+            }
+        );
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar o carrinho:",
+            erro
+        );
+
+        localStorage.removeItem(
+            CHAVE_CARRINHO
+        );
+    }
 }
 
 
@@ -448,9 +604,9 @@ function adicionarAoCarrinho(
             produto
         );
 
+        salvarCarrinho();
 
         renderizarCarrinho();
-
 
         mostrarMensagem(
             `${produto.nome} foi adicionado ao carrinho.`
@@ -581,8 +737,8 @@ function renderizarCarrinho() {
                 <div class="item-carrinho-subtotal">
 
                     ${formatarMoeda(
-                        item.subtotal
-                    )}
+                item.subtotal
+            )}
 
                 </div>
 
@@ -625,6 +781,8 @@ function renderizarCarrinho() {
                         -1
                     );
 
+                    salvarCarrinho();
+
                     renderizarCarrinho();
 
                 }
@@ -640,6 +798,8 @@ function renderizarCarrinho() {
                         1
                     );
 
+                    salvarCarrinho();
+
                     renderizarCarrinho();
 
                 }
@@ -653,6 +813,8 @@ function renderizarCarrinho() {
                     carrinho.remover(
                         produto.id
                     );
+
+                    salvarCarrinho();
 
                     renderizarCarrinho();
 
@@ -682,8 +844,8 @@ function renderizarCarrinho() {
 
             <strong>
                 ${formatarMoeda(
-                    carrinho.subtotal
-                )}
+        carrinho.subtotal
+    )}
             </strong>
 
         </div>
@@ -697,8 +859,8 @@ function renderizarCarrinho() {
 
             <strong>
                 ${formatarMoeda(
-                    carrinho.taxa
-                )}
+        carrinho.taxa
+    )}
             </strong>
 
         </div>
@@ -712,8 +874,8 @@ function renderizarCarrinho() {
 
             <strong>
                 ${formatarMoeda(
-                    carrinho.total
-                )}
+        carrinho.total
+    )}
             </strong>
 
         </div>
@@ -754,12 +916,438 @@ function limparCarrinho() {
 
     carrinho.limpar();
 
+    salvarCarrinho();
+
     renderizarCarrinho();
 
     mostrarMensagem(
         "Carrinho limpo com sucesso."
     );
 
+}
+
+// =========================================================
+// TIPO DE ENTREGA
+// =========================================================
+
+function configurarTipoEntrega() {
+
+    const opcoes =
+        document.querySelectorAll(
+            'input[name="tipo-entrega"]'
+        );
+
+    opcoes.forEach(
+        (opcao) => {
+
+            opcao.checked =
+                opcao.value ===
+                carrinho.tipoEntrega;
+
+            opcao.addEventListener(
+                "change",
+                () => {
+
+                    carrinho.tipoEntrega =
+                        opcao.value;
+
+                    salvarCarrinho();
+
+                    renderizarCarrinho();
+
+                }
+            );
+        }
+    );
+}
+
+// =========================================================
+// RESUMO DO CHECKOUT
+// =========================================================
+
+function renderizarResumoCheckout() {
+
+    resumoCheckout.innerHTML = "";
+
+    carrinho.itens.forEach(
+        (item) => {
+
+            const linha =
+                document.createElement(
+                    "div"
+                );
+
+            linha.className =
+                "resumo-checkout-item";
+
+            linha.innerHTML = `
+                <span>
+                    ${item.produto.nome}
+                    × ${item.quantidade}
+                </span>
+
+                <strong>
+                    ${formatarMoeda(
+                item.subtotal
+            )}
+                </strong>
+            `;
+
+            resumoCheckout.appendChild(
+                linha
+            );
+        }
+    );
+
+    const linhaTaxa =
+        document.createElement(
+            "div"
+        );
+
+    linhaTaxa.className =
+        "resumo-checkout-item";
+
+    linhaTaxa.innerHTML = `
+        <span>
+            Taxa de entrega
+        </span>
+
+        <strong>
+            ${formatarMoeda(
+        carrinho.taxa
+    )}
+        </strong>
+    `;
+
+    resumoCheckout.appendChild(
+        linhaTaxa
+    );
+
+    const linhaTotal =
+        document.createElement(
+            "div"
+        );
+
+    linhaTotal.className =
+        "resumo-checkout-total";
+
+    linhaTotal.innerHTML = `
+        <span>
+            Total
+        </span>
+
+        <strong>
+            ${formatarMoeda(
+        carrinho.total
+    )}
+        </strong>
+    `;
+
+    resumoCheckout.appendChild(
+        linhaTotal
+    );
+}
+
+// =========================================================
+// ABRIR CHECKOUT
+// =========================================================
+
+function abrirCheckout() {
+
+    if (carrinho.itens.length === 0) {
+
+        mostrarMensagem(
+            "Adicione pelo menos um produto antes de finalizar.",
+            "aviso"
+        );
+
+        return;
+    }
+
+    renderizarResumoCheckout();
+
+    modalCheckout.showModal();
+
+    campoNomeCliente.focus();
+}
+
+// =========================================================
+// FECHAR CHECKOUT
+// =========================================================
+
+function fecharCheckout() {
+
+    formCheckout.reset();
+
+    modalCheckout.close();
+}
+
+// =========================================================
+// CRIAR O PEDIDO
+// =========================================================
+
+function finalizarPedido(evento) {
+
+    evento.preventDefault();
+
+    const nomeCliente =
+        campoNomeCliente.value.trim();
+
+    if (!nomeCliente) {
+
+        mostrarMensagem(
+            "Informe o nome do cliente.",
+            "erro"
+        );
+
+        campoNomeCliente.focus();
+
+        return;
+    }
+
+    if (carrinho.itens.length === 0) {
+
+        mostrarMensagem(
+            "O carrinho está vazio.",
+            "aviso"
+        );
+
+        fecharCheckout();
+
+        return;
+    }
+
+    try {
+
+        const pedido =
+            new Pedido(
+                nomeCliente,
+                carrinho.itens,
+                carrinho.tipoEntrega,
+                carrinho.total
+            );
+
+        gerenciador.adicionarPedido(
+            pedido
+        );
+
+        carrinho.limpar();
+
+        salvarCarrinho();
+
+        renderizarCarrinho();
+
+        renderizarPedidos();
+
+        fecharCheckout();
+
+        mostrarMensagem(
+            `Pedido #${pedido.id} realizado com sucesso!`
+        );
+
+        document
+            .getElementById("pedidos")
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+
+    } catch (erro) {
+
+        console.error(
+            erro
+        );
+
+        mostrarMensagem(
+            "Não foi possível finalizar o pedido.",
+            "erro"
+        );
+    }
+}
+
+// =========================================================
+// MEUS PEDIDOS
+// =========================================================
+
+function renderizarPedidos() {
+
+    const pedidos =
+        gerenciador.listarPedidos();
+
+    listaPedidos.innerHTML = "";
+
+    if (pedidos.length === 0) {
+
+        listaPedidos.innerHTML = `
+            <div class="estado-vazio">
+
+                <h3>
+                    Você ainda não possui pedidos
+                </h3>
+
+                <p>
+                    Seus pedidos finalizados
+                    aparecerão aqui.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    pedidos
+        .slice()
+        .reverse()
+        .forEach(
+            (pedido) => {
+
+                const card =
+                    document.createElement(
+                        "article"
+                    );
+
+                card.className =
+                    "card-pedido";
+
+                const itensHtml =
+                    pedido.itens
+                        .map(
+                            (item) => `
+                                <li>
+                                    ${item.produto.nome}
+                                    × ${item.quantidade}
+                                </li>
+                            `
+                        )
+                        .join("");
+
+                let tipoEntregaTexto =
+                    "Retirada";
+
+                if (
+                    pedido.tipoEntrega ===
+                    "local"
+                ) {
+
+                    tipoEntregaTexto =
+                        "Consumo no local";
+
+                } else if (
+                    pedido.tipoEntrega ===
+                    "entrega"
+                ) {
+
+                    tipoEntregaTexto =
+                        "Delivery";
+                }
+
+                let classeStatus =
+                    "status-realizado";
+
+                if (
+                    pedido.status ===
+                    "Em preparo"
+                ) {
+
+                    classeStatus =
+                        "status-preparo";
+
+                } else if (
+                    pedido.status ===
+                    "Pronto"
+                ) {
+
+                    classeStatus =
+                        "status-pronto";
+
+                } else if (
+                    pedido.status ===
+                    "Entregue"
+                ) {
+
+                    classeStatus =
+                        "status-entregue";
+
+                } else if (
+                    pedido.status ===
+                    "Cancelado"
+                ) {
+
+                    classeStatus =
+                        "status-cancelado";
+                }
+
+                card.innerHTML = `
+                    <div
+                        class="card-pedido-cabecalho"
+                    >
+
+                        <div>
+
+                            <span class="subtitulo">
+                                Pedido #${pedido.id}
+                            </span>
+
+                            <h3>
+                                ${pedido.cliente}
+                            </h3>
+
+                            <span
+                                class="card-pedido-data"
+                            >
+                                ${pedido.data}
+                            </span>
+
+                        </div>
+
+                        <span
+                            class="status-pedido ${classeStatus}"
+                        >
+                            ${pedido.status}
+                        </span>
+
+                    </div>
+
+                    <p>
+                        <strong>
+                            Recebimento:
+                        </strong>
+
+                        ${tipoEntregaTexto}
+                    </p>
+
+                    <div>
+                        <strong>
+                            Itens:
+                        </strong>
+
+                        <ul>
+                            ${itensHtml}
+                        </ul>
+                    </div>
+
+                    <div
+                        class="resumo-linha resumo-total"
+                    >
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong>
+                            ${formatarMoeda(
+                                pedido.total
+                            )}
+                        </strong>
+
+                    </div>
+                `;
+
+                listaPedidos.appendChild(
+                    card
+                );
+            }
+        );
 }
 
 
@@ -821,8 +1409,8 @@ function renderizarCarrossel() {
                 <div class="slide-preco">
 
                     ${formatarMoeda(
-                        produto.preco
-                    )}
+        produto.preco
+    )}
 
                 </div>
 
@@ -952,18 +1540,35 @@ btnAnterior.addEventListener(
     slideAnterior
 );
 
-
 btnProximo.addEventListener(
     "click",
     proximoSlide
 );
-
 
 btnLimparCarrinho.addEventListener(
     "click",
     limparCarrinho
 );
 
+btnFinalizar.addEventListener(
+    "click",
+    abrirCheckout
+);
+
+formCheckout.addEventListener(
+    "submit",
+    finalizarPedido
+);
+
+btnFecharCheckout.addEventListener(
+    "click",
+    fecharCheckout
+);
+
+btnCancelarCheckout.addEventListener(
+    "click",
+    fecharCheckout
+);
 
 // =========================================================
 // INICIALIZAÇÃO
@@ -972,6 +1577,10 @@ btnLimparCarrinho.addEventListener(
 function iniciarAplicacao() {
 
     carregarProdutosIniciais();
+
+    carregarCarrinho();
+
+    configurarTipoEntrega();
 
     renderizarFiltros();
 
@@ -982,6 +1591,5 @@ function iniciarAplicacao() {
     renderizarCarrinho();
 
 }
-
 
 iniciarAplicacao();

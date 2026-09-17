@@ -1,4 +1,5 @@
 import { Produto } from "./models/Produto.js";
+import { ItemCarrinho } from "./models/ItemCarrinho.js";
 import { Pedido } from "./models/Pedido.js";
 
 export class Gerenciador {
@@ -177,17 +178,30 @@ export class Gerenciador {
       const pedidos = JSON.parse(pedidosSalvos);
 
       this.#pedidos = pedidos.map((pedido) => {
-        const novoPedido = new Pedido(
+        const itens = Array.isArray(pedido.itens)
+          ? pedido.itens.map((item) => {
+              const produto = new Produto(
+                item.produto.id,
+                item.produto.nome,
+                item.produto.descricao,
+                item.produto.preco,
+                item.produto.categoria,
+                item.produto.imagem,
+              );
+
+              return new ItemCarrinho(produto, item.quantidade);
+            })
+          : [];
+
+        return new Pedido(
           pedido.cliente,
-          pedido.itens,
+          itens,
           pedido.tipoEntrega,
           pedido.total,
           pedido.id,
           pedido.data,
           pedido.status,
         );
-
-        return novoPedido;
       });
     }
   }
