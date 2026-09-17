@@ -1973,3 +1973,72 @@ a {
 
     border: 0;
 }
+
+/* =========================================================
+   MODAL DE CONFIRMAÇÃO
+========================================================= */
+
+.modal-confirmacao {
+    width: min(560px, calc(100% - 30px));
+
+    max-width: 560px;
+
+    border: none;
+
+    border-radius: var(--raio-medio);
+
+    padding: 0;
+
+    background: transparent;
+}
+
+
+.modal-confirmacao::backdrop {
+    background-color: rgba(0, 0, 0, 0.65);
+}
+
+
+.modal-confirmacao .modal-conteudo {
+    background-color: #ffffff;
+}
+
+
+.btn-perigo {
+    min-height: 44px;
+
+    padding:
+        10px 18px;
+
+    border:
+        1px solid var(--cor-erro);
+
+    border-radius:
+        var(--raio-pequeno);
+
+    background-color:
+        var(--cor-erro);
+
+    color:
+        #ffffff;
+
+    font-weight:
+        700;
+}
+
+.btn-perigo:hover {
+    opacity: 0.9;
+}
+
+.btn-slide-adicionar {
+    margin-top: 16px;
+}
+
+.slide-overlay .btn-slide-adicionar {
+    display: inline-flex;
+
+    width: auto;
+
+    align-items: center;
+
+    justify-content: center;
+}
