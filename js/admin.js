@@ -1,5 +1,22 @@
+import {
+    exigirPerfil,
+    configurarInterfaceAutenticada,
+} from "./auth.js";
+
 import { Produto } from "./models/Produto.js";
 import { Gerenciador } from "./Gerenciador.js";
+
+// =========================================================
+// CONTROLE DE ACESSO
+// =========================================================
+
+const usuarioAtual =
+    exigirPerfil("admin");
+
+configurarInterfaceAutenticada(
+    "usuario-logado",
+    "btn-sair",
+);
 
 // =========================================================
 // GERENCIADOR

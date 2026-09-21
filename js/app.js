@@ -1,7 +1,24 @@
+import {
+  exigirPerfil,
+  configurarInterfaceAutenticada,
+} from "./auth.js";
+
 import { Produto } from "./models/Produto.js";
 import { Carrinho } from "./models/Carrinho.js";
 import { Pedido } from "./models/Pedido.js";
 import { Gerenciador } from "./Gerenciador.js";
+
+// =========================================================
+// CONTROLE DE ACESSO
+// =========================================================
+
+const usuarioAtual =
+  exigirPerfil("cliente");
+
+configurarInterfaceAutenticada(
+  "usuario-logado",
+  "btn-sair",
+);
 
 // =========================================================
 // OBJETOS PRINCIPAIS

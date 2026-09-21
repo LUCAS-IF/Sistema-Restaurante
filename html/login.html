@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Sabor & Arte - Acesso ao sistema de pedidos"
+  >
+
+  <title>Login - Sabor & Arte</title>
+
+  <link
+    rel="stylesheet"
+    href="../css/style.css"
+  >
+</head>
+
+<body class="pagina-login">
+
+  <a
+    class="link-pular"
+    href="#conteudo-principal"
+  >
+    Pular para o conteúdo
+  </a>
+
+  <header class="cabecalho">
+    <div class="container cabecalho-conteudo">
+
+      <div class="marca">
+        <h1>🍽️ Sabor & Arte</h1>
+
+        <p>
+          Restaurante & Sistema de Pedidos
+        </p>
+      </div>
+
+    </div>
+  </header>
+
+  <main id="conteudo-principal">
+
+    <section
+      class="secao secao-login"
+      aria-labelledby="titulo-login"
+    >
+
+      <div class="container">
+
+        <div class="login-card">
+
+          <div class="titulo-secao">
+
+            <span class="subtitulo">
+              Acesso ao sistema
+            </span>
+
+            <h2 id="titulo-login">
+              Entre na sua conta
+            </h2>
+
+            <p>
+              Acesse como cliente ou administrador.
+            </p>
+
+          </div>
+
+          <form
+            id="form-login"
+            class="formulario-login"
+          >
+
+            <div class="campo">
+
+              <label for="login">
+                Login
+              </label>
+
+              <input
+                id="login"
+                name="login"
+                type="text"
+                maxlength="50"
+                autocomplete="username"
+                placeholder="Digite seu login"
+                required
+              >
+
+            </div>
+
+            <div class="campo">
+
+              <label for="senha">
+                Senha
+              </label>
+
+              <input
+                id="senha"
+                name="senha"
+                type="password"
+                maxlength="100"
+                autocomplete="current-password"
+                placeholder="Digite sua senha"
+                required
+              >
+
+            </div>
+
+            <div
+              id="mensagem-login"
+              class="mensagem-login"
+              role="alert"
+              aria-live="assertive"
+              aria-atomic="true"
+            ></div>
+
+            <button
+              class="btn btn-principal btn-login"
+              type="submit"
+            >
+              Entrar
+            </button>
+
+          </form>
+
+          <div class="login-informacao">
+
+            <h3>
+              Acessos para demonstração
+            </h3>
+
+            <p>
+              <strong>Cliente:</strong>
+              cliente / Cliente123!
+            </p>
+
+            <p>
+              <strong>Administrador:</strong>
+              admin / Admin123!
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+
+    <div class="container">
+
+      <div class="rodape-final">
+
+        <p>
+          Sabor & Arte — Projeto acadêmico
+        </p>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+  <script
+    type="module"
+    src="../js/login.js"
+  ></script>
+
+</body>
+
+</html>

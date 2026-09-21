@@ -28,9 +28,27 @@
         <p>Área Administrativa</p>
       </div>
 
-      <nav class="navegacao" aria-label="Navegação administrativa">
-        <a href="index.html"> ← Voltar ao restaurante </a>
+      <nav
+        class="navegacao"
+        aria-label="Navegação administrativa"
+      >
+
+        <span
+          id="usuario-logado"
+          class="usuario-logado"
+          aria-label="Usuário administrativo conectado"
+        ></span>
+
+        <button
+          id="btn-sair"
+          class="btn btn-secundario btn-sair"
+          type="button"
+        >
+          Sair
+        </button>
+
       </nav>
+
     </div>
   </header>
 
@@ -222,9 +240,8 @@
       <div class="rodape-final">
         <p>Sabor & Arte — Área administrativa</p>
 
-        <p>
-          <a href="index.html"> ← Voltar ao restaurante </a>
-        </p>
+        <p>Área restrita ao administrador autenticado.</p>
+
       </div>
     </div>
   </footer>
