@@ -387,14 +387,6 @@ function excluirProduto(id) {
         return;
     }
 
-    /*
-            Neste momento usamos confirm para impedir
-            uma exclusão acidental.
-    
-            Também vamos substituir isso por uma confirmação
-            visual personalizada antes da entrega final.
-        */
-
     abrirConfirmacao(
         "Excluir produto",
         `Deseja realmente excluir "${produto.nome}"?`,
@@ -417,23 +409,6 @@ function excluirProduto(id) {
             }
         },
     );
-
-    try {
-        gerenciador.removerProduto(id);
-
-        fecharFormulario();
-
-        renderizarProdutos();
-
-        mostrarMensagem("Produto excluído.");
-    } catch (erro) {
-        console.error(erro);
-
-        mostrarMensagem(
-            erro.message || "Não foi possível excluir o produto.",
-            "erro",
-        );
-    }
 }
 
 // =========================================================
@@ -788,21 +763,6 @@ function excluirPedido(id) {
             }
         },
     );
-
-    try {
-        gerenciador.removerPedido(id);
-
-        renderizarPedidos();
-
-        mostrarMensagem("Pedido excluído.");
-    } catch (erro) {
-        console.error(erro);
-
-        mostrarMensagem(
-            erro.message || "Não foi possível excluir o pedido.",
-            "erro",
-        );
-    }
 }
 
 // =========================================================
