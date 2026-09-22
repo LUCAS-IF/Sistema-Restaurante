@@ -216,8 +216,18 @@
                   Nome completo
                 </label>
 
-                <input id="nome-cliente" type="text" maxlength="100" placeholder="Digite seu nome" autocomplete="name"
-                  required>
+                <input
+                  id="nome-cliente"
+                  type="text"
+                  maxlength="100"
+                  autocomplete="name"
+                  readonly
+                  aria-describedby="ajuda-nome-cliente"
+                />
+
+                <small id="ajuda-nome-cliente">
+                  O nome é definido pela conta conectada.
+                </small>
               </div>
 
               <div id="resumo-checkout" class="resumo-checkout"></div>

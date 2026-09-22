@@ -1,6 +1,7 @@
 export class Pedido {
   #id;
   #cliente;
+  #clienteId;
   #itens;
   #tipoEntrega;
   #total;
@@ -12,16 +13,28 @@ export class Pedido {
     itens,
     tipoEntrega,
     total,
+    clienteId = null,
     id = Date.now(),
     data = new Date().toLocaleString("pt-BR"),
     status = "Realizado",
   ) {
     this.#id = id;
-    this.#cliente = cliente;
+
+    this.#cliente = String(cliente || "").trim();
+
+    this.#clienteId =
+      clienteId !== null && clienteId !== undefined
+        ? String(clienteId)
+        : null;
+
     this.#itens = [...itens];
+
     this.#tipoEntrega = tipoEntrega;
-    this.#total = total;
+
+    this.#total = Number(total);
+
     this.#data = data;
+
     this.#status = status;
   }
 
@@ -31,6 +44,10 @@ export class Pedido {
 
   get cliente() {
     return this.#cliente;
+  }
+
+  get clienteId() {
+    return this.#clienteId;
   }
 
   get itens() {
@@ -62,15 +79,20 @@ export class Pedido {
       "Cancelado",
     ];
 
-    if (statusValidos.includes(novoStatus)) {
-      this.#status = novoStatus;
+    if (!statusValidos.includes(novoStatus)) {
+      throw new Error(
+        "Status de pedido inválido.",
+      );
     }
+
+    this.#status = novoStatus;
   }
 
   toJSON() {
     return {
       id: this.#id,
       cliente: this.#cliente,
+      clienteId: this.#clienteId,
       itens: this.#itens,
       tipoEntrega: this.#tipoEntrega,
       total: this.#total,

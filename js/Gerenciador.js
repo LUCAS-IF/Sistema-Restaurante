@@ -8,6 +8,7 @@ export class Gerenciador {
 
   constructor() {
     this.#produtos = [];
+
     this.#pedidos = [];
 
     this.carregarDados();
@@ -20,13 +21,18 @@ export class Gerenciador {
   // CREATE
   adicionarProduto(produto) {
     if (!(produto instanceof Produto)) {
-      throw new Error("O objeto informado não é um Produto.");
+      throw new Error(
+        "O objeto informado não é um Produto.",
+      );
     }
 
-    const produtoExistente = this.buscarProdutoPorId(produto.id);
+    const produtoExistente =
+      this.buscarProdutoPorId(produto.id);
 
     if (produtoExistente) {
-      throw new Error("Já existe um produto com esse ID.");
+      throw new Error(
+        "Já existe um produto com esse ID.",
+      );
     }
 
     this.#produtos.push(produto);
@@ -40,15 +46,21 @@ export class Gerenciador {
   }
 
   buscarProdutoPorId(id) {
-    return this.#produtos.find((produto) => produto.id === Number(id));
+    return this.#produtos.find(
+      (produto) =>
+        produto.id === Number(id),
+    );
   }
 
   // UPDATE
   atualizarProduto(id, dados) {
-    const produto = this.buscarProdutoPorId(id);
+    const produto =
+      this.buscarProdutoPorId(id);
 
     if (!produto) {
-      throw new Error("Produto não encontrado.");
+      throw new Error(
+        "Produto não encontrado.",
+      );
     }
 
     if (dados.nome !== undefined) {
@@ -56,19 +68,24 @@ export class Gerenciador {
     }
 
     if (dados.descricao !== undefined) {
-      produto.descricao = dados.descricao;
+      produto.descricao =
+        dados.descricao;
     }
 
     if (dados.preco !== undefined) {
-      produto.preco = dados.preco;
+      produto.preco = Number(
+        dados.preco,
+      );
     }
 
     if (dados.categoria !== undefined) {
-      produto.categoria = dados.categoria;
+      produto.categoria =
+        dados.categoria;
     }
 
     if (dados.imagem !== undefined) {
-      produto.imagem = dados.imagem;
+      produto.imagem =
+        dados.imagem;
     }
 
     this.salvarDados();
@@ -76,27 +93,37 @@ export class Gerenciador {
 
   // DELETE
   removerProduto(id) {
-    const quantidadeAntes = this.#produtos.length;
+    const quantidadeAntes =
+      this.#produtos.length;
 
-    this.#produtos = this.#produtos.filter(
-      (produto) => produto.id !== Number(id),
-    );
+    this.#produtos =
+      this.#produtos.filter(
+        (produto) =>
+          produto.id !== Number(id),
+      );
 
-    if (this.#produtos.length === quantidadeAntes) {
-      throw new Error("Produto não encontrado.");
+    if (
+      this.#produtos.length ===
+      quantidadeAntes
+    ) {
+      throw new Error(
+        "Produto não encontrado.",
+      );
     }
 
     this.salvarDados();
   }
 
   // =====================================================
-  // PEDIDOS
+  // PEDIDOS - CRUD
   // =====================================================
 
   // CREATE
   adicionarPedido(pedido) {
     if (!(pedido instanceof Pedido)) {
-      throw new Error("O objeto informado não é um Pedido.");
+      throw new Error(
+        "O objeto informado não é um Pedido.",
+      );
     }
 
     this.#pedidos.push(pedido);
@@ -105,35 +132,76 @@ export class Gerenciador {
   }
 
   // READ
-  listarPedidos() {
-    return [...this.#pedidos];
+  //
+  // Sem clienteId:
+  // retorna todos os pedidos.
+  //
+  // Com clienteId:
+  // retorna somente os pedidos desse cliente.
+  listarPedidos(clienteId = null) {
+    if (
+      clienteId === null ||
+      clienteId === undefined
+    ) {
+      return [...this.#pedidos];
+    }
+
+    const clienteIdNormalizado =
+      String(clienteId);
+
+    return this.#pedidos.filter(
+      (pedido) =>
+        pedido.clienteId ===
+        clienteIdNormalizado,
+    );
   }
 
   buscarPedidoPorId(id) {
-    return this.#pedidos.find((pedido) => pedido.id === Number(id));
+    return this.#pedidos.find(
+      (pedido) =>
+        pedido.id === Number(id),
+    );
   }
 
   // UPDATE
-  atualizarStatusPedido(id, novoStatus) {
-    const pedido = this.buscarPedidoPorId(id);
+  atualizarStatusPedido(
+    id,
+    novoStatus,
+  ) {
+    const pedido =
+      this.buscarPedidoPorId(id);
 
     if (!pedido) {
-      throw new Error("Pedido não encontrado.");
+      throw new Error(
+        "Pedido não encontrado.",
+      );
     }
 
-    pedido.alterarStatus(novoStatus);
+    pedido.alterarStatus(
+      novoStatus,
+    );
 
     this.salvarDados();
   }
 
   // DELETE
   removerPedido(id) {
-    const quantidadeAntes = this.#pedidos.length;
+    const quantidadeAntes =
+      this.#pedidos.length;
 
-    this.#pedidos = this.#pedidos.filter((pedido) => pedido.id !== Number(id));
+    this.#pedidos =
+      this.#pedidos.filter(
+        (pedido) =>
+          pedido.id !== Number(id),
+      );
 
-    if (this.#pedidos.length === quantidadeAntes) {
-      throw new Error("Pedido não encontrado.");
+    if (
+      this.#pedidos.length ===
+      quantidadeAntes
+    ) {
+      throw new Error(
+        "Pedido não encontrado.",
+      );
     }
 
     this.salvarDados();
@@ -144,65 +212,123 @@ export class Gerenciador {
   // =====================================================
 
   salvarDados() {
-    const produtos = this.#produtos.map((produto) => produto.toJSON());
+    const produtos =
+      this.#produtos.map(
+        (produto) =>
+          produto.toJSON(),
+      );
 
-    const pedidos = this.#pedidos.map((pedido) => pedido.toJSON());
+    const pedidos =
+      this.#pedidos.map(
+        (pedido) =>
+          pedido.toJSON(),
+      );
 
-    localStorage.setItem("restaurante_produtos", JSON.stringify(produtos));
+    localStorage.setItem(
+      "restaurante_produtos",
+      JSON.stringify(produtos),
+    );
 
-    localStorage.setItem("restaurante_pedidos", JSON.stringify(pedidos));
+    localStorage.setItem(
+      "restaurante_pedidos",
+      JSON.stringify(pedidos),
+    );
   }
 
   carregarDados() {
-    const produtosSalvos = localStorage.getItem("restaurante_produtos");
-
-    const pedidosSalvos = localStorage.getItem("restaurante_pedidos");
-
-    if (produtosSalvos) {
-      const produtos = JSON.parse(produtosSalvos);
-
-      this.#produtos = produtos.map(
-        (produto) =>
-          new Produto(
-            produto.id,
-            produto.nome,
-            produto.descricao,
-            produto.preco,
-            produto.categoria,
-            produto.imagem,
-          ),
-      );
-    }
-
-    if (pedidosSalvos) {
-      const pedidos = JSON.parse(pedidosSalvos);
-
-      this.#pedidos = pedidos.map((pedido) => {
-        const itens = Array.isArray(pedido.itens)
-          ? pedido.itens.map((item) => {
-              const produto = new Produto(
-                item.produto.id,
-                item.produto.nome,
-                item.produto.descricao,
-                item.produto.preco,
-                item.produto.categoria,
-                item.produto.imagem,
-              );
-
-              return new ItemCarrinho(produto, item.quantidade);
-            })
-          : [];
-
-        return new Pedido(
-          pedido.cliente,
-          itens,
-          pedido.tipoEntrega,
-          pedido.total,
-          pedido.id,
-          pedido.data,
-          pedido.status,
+    try {
+      const produtosSalvos =
+        localStorage.getItem(
+          "restaurante_produtos",
         );
-      });
+
+      const pedidosSalvos =
+        localStorage.getItem(
+          "restaurante_pedidos",
+        );
+
+      // =================================================
+      // PRODUTOS
+      // =================================================
+
+      if (produtosSalvos) {
+        const produtos =
+          JSON.parse(produtosSalvos);
+
+        if (Array.isArray(produtos)) {
+          this.#produtos =
+            produtos.map(
+              (produto) =>
+                new Produto(
+                  produto.id,
+                  produto.nome,
+                  produto.descricao,
+                  produto.preco,
+                  produto.categoria,
+                  produto.imagem,
+                ),
+            );
+        }
+      }
+
+      // =================================================
+      // PEDIDOS
+      // =================================================
+
+      if (pedidosSalvos) {
+        const pedidos =
+          JSON.parse(pedidosSalvos);
+
+        if (Array.isArray(pedidos)) {
+          this.#pedidos =
+            pedidos.map((pedido) => {
+              const itens =
+                Array.isArray(
+                  pedido.itens,
+                )
+                  ? pedido.itens.map(
+                      (item) => {
+                        const produto =
+                          new Produto(
+                            item.produto.id,
+                            item.produto.nome,
+                            item.produto.descricao,
+                            item.produto.preco,
+                            item.produto.categoria,
+                            item.produto.imagem,
+                          );
+
+                        return new ItemCarrinho(
+                          produto,
+                          item.quantidade,
+                        );
+                      },
+                    )
+                  : [];
+
+              return new Pedido(
+                pedido.cliente,
+                itens,
+                pedido.tipoEntrega,
+                pedido.total,
+                pedido.clienteId ??
+                  null,
+                pedido.id,
+                pedido.data,
+                pedido.status,
+              );
+            });
+        }
+      }
+    } catch (erro) {
+      console.error(
+        "Erro ao carregar dados do localStorage:",
+        erro,
+      );
+
+      this.#produtos = [];
+
+      this.#pedidos = [];
     }
   }
 }

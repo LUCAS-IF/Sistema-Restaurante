@@ -25,9 +25,12 @@ configurarInterfaceAutenticada(
 // =========================================================
 
 const gerenciador = new Gerenciador();
-const carrinho = new Carrinho();
 
-const CHAVE_CARRINHO = "restaurante_carrinho";
+const carrinho =
+  new Carrinho();
+
+const CHAVE_CARRINHO =
+  "restaurante_carrinho";
 
 // =========================================================
 // ELEMENTOS DA PÁGINA
@@ -777,6 +780,19 @@ function renderizarResumoCheckout() {
 // =========================================================
 
 function abrirCheckout() {
+  if (!usuarioAtual) {
+    mostrarMensagem(
+      "Faça login para realizar um pedido.",
+      "erro",
+    );
+
+    window.location.replace(
+      "./login.html",
+    );
+
+    return;
+  }
+
   if (carrinho.itens.length === 0) {
     mostrarMensagem(
       "Adicione pelo menos um produto antes de finalizar.",
@@ -785,6 +801,11 @@ function abrirCheckout() {
 
     return;
   }
+
+  campoNomeCliente.value =
+    usuarioAtual.nome;
+
+  campoNomeCliente.readOnly = true;
 
   renderizarResumoCheckout();
 
@@ -810,18 +831,26 @@ function fecharCheckout() {
 function finalizarPedido(evento) {
   evento.preventDefault();
 
-  const nomeCliente = campoNomeCliente.value.trim();
+  if (!usuarioAtual) {
+    mostrarMensagem(
+      "Sua sessão expirou. Faça login novamente.",
+      "erro",
+    );
 
-  if (!nomeCliente) {
-    mostrarMensagem("Informe o nome do cliente.", "erro");
+    fecharCheckout();
 
-    campoNomeCliente.focus();
+    window.location.replace(
+      "./login.html",
+    );
 
     return;
   }
 
   if (carrinho.itens.length === 0) {
-    mostrarMensagem("O carrinho está vazio.", "aviso");
+    mostrarMensagem(
+      "O carrinho está vazio.",
+      "aviso",
+    );
 
     fecharCheckout();
 
@@ -830,13 +859,16 @@ function finalizarPedido(evento) {
 
   try {
     const pedido = new Pedido(
-      nomeCliente,
+      usuarioAtual.nome,
       carrinho.itens,
       carrinho.tipoEntrega,
       carrinho.total,
+      usuarioAtual.id,
     );
 
-    gerenciador.adicionarPedido(pedido);
+    gerenciador.adicionarPedido(
+      pedido,
+    );
 
     carrinho.limpar();
 
@@ -848,15 +880,24 @@ function finalizarPedido(evento) {
 
     fecharCheckout();
 
-    mostrarMensagem(`Pedido #${pedido.id} realizado!`);
+    mostrarMensagem(
+      `Pedido #${pedido.id} realizado com sucesso!`,
+    );
 
-    document.getElementById("pedidos").scrollIntoView({
-      behavior: "smooth",
-    });
+    document
+      .getElementById("pedidos")
+      .scrollIntoView({
+        behavior: "smooth",
+      });
+
   } catch (erro) {
     console.error(erro);
 
-    mostrarMensagem("Não foi possível finalizar o pedido.", "erro");
+    mostrarMensagem(
+      erro.message ||
+        "Não foi possível finalizar o pedido.",
+      "erro",
+    );
   }
 }
 
@@ -865,25 +906,32 @@ function finalizarPedido(evento) {
 // =========================================================
 
 function renderizarPedidos() {
-  const pedidos = gerenciador.listarPedidos();
+  if (!usuarioAtual) {
+    return;
+  }
+
+  const pedidos =
+    gerenciador.listarPedidos(
+      usuarioAtual.id,
+    );
 
   listaPedidos.innerHTML = "";
 
   if (pedidos.length === 0) {
     listaPedidos.innerHTML = `
-            <div class="estado-vazio">
+      <div class="estado-vazio">
 
-                <h3>
-                    Você ainda não possui pedidos
-                </h3>
+        <h3>
+          Você ainda não possui pedidos
+        </h3>
 
-                <p>
-                    Seus pedidos finalizados
-                    aparecerão aqui.
-                </p>
+        <p>
+          Seus pedidos finalizados
+          aparecerão aqui.
+        </p>
 
-            </div>
-        `;
+      </div>
+    `;
 
     return;
   }
@@ -892,106 +940,149 @@ function renderizarPedidos() {
     .slice()
     .reverse()
     .forEach((pedido) => {
-      const card = document.createElement("article");
+      const card =
+        document.createElement(
+          "article",
+        );
 
-      card.className = "card-pedido";
+      card.className =
+        "card-pedido";
 
-      const itensHtml = pedido.itens
-        .map(
-          (item) => `
-                                <li>
-                                    ${item.produto.nome}
-                                    × ${item.quantidade}
-                                </li>
-                            `,
-        )
-        .join("");
+      const itensHtml =
+        pedido.itens
+          .map(
+            (item) => `
+              <li>
+                ${item.produto.nome}
+                × ${item.quantidade}
+              </li>
+            `,
+          )
+          .join("");
 
-      let tipoEntregaTexto = "Retirada";
+      let tipoEntregaTexto =
+        "Retirada";
 
-      if (pedido.tipoEntrega === "local") {
-        tipoEntregaTexto = "Consumo no local";
-      } else if (pedido.tipoEntrega === "entrega") {
-        tipoEntregaTexto = "Delivery";
+      if (
+        pedido.tipoEntrega ===
+        "local"
+      ) {
+        tipoEntregaTexto =
+          "Consumo no local";
       }
 
-      let classeStatus = "status-realizado";
+      if (
+        pedido.tipoEntrega ===
+        "entrega"
+      ) {
+        tipoEntregaTexto =
+          "Delivery";
+      }
 
-      if (pedido.status === "Em preparo") {
-        classeStatus = "status-preparo";
-      } else if (pedido.status === "Pronto") {
-        classeStatus = "status-pronto";
-      } else if (pedido.status === "Entregue") {
-        classeStatus = "status-entregue";
-      } else if (pedido.status === "Cancelado") {
-        classeStatus = "status-cancelado";
+      let classeStatus =
+        "status-realizado";
+
+      if (
+        pedido.status ===
+        "Em preparo"
+      ) {
+        classeStatus =
+          "status-preparo";
+      }
+
+      if (
+        pedido.status ===
+        "Pronto"
+      ) {
+        classeStatus =
+          "status-pronto";
+      }
+
+      if (
+        pedido.status ===
+        "Entregue"
+      ) {
+        classeStatus =
+          "status-entregue";
+      }
+
+      if (
+        pedido.status ===
+        "Cancelado"
+      ) {
+        classeStatus =
+          "status-cancelado";
       }
 
       card.innerHTML = `
-                    <div
-                        class="card-pedido-cabecalho"
-                    >
+        <div
+          class="card-pedido-cabecalho"
+        >
 
-                        <div>
+          <div>
 
-                            <span class="subtitulo">
-                                Pedido #${pedido.id}
-                            </span>
+            <span class="subtitulo">
+              Pedido #${pedido.id}
+            </span>
 
-                            <h3>
-                                ${pedido.cliente}
-                            </h3>
+            <h3>
+              ${pedido.cliente}
+            </h3>
 
-                            <span
-                                class="card-pedido-data"
-                            >
-                                ${pedido.data}
-                            </span>
+            <span
+              class="card-pedido-data"
+            >
+              ${pedido.data}
+            </span>
 
-                        </div>
+          </div>
 
-                        <span
-                            class="status-pedido ${classeStatus}"
-                        >
-                            ${pedido.status}
-                        </span>
+          <span
+            class="status-pedido ${classeStatus}"
+          >
+            ${pedido.status}
+          </span>
 
-                    </div>
+        </div>
 
-                    <p>
-                        <strong>
-                            Recebimento:
-                        </strong>
+        <p>
+          <strong>
+            Recebimento:
+          </strong>
 
-                        ${tipoEntregaTexto}
-                    </p>
+          ${tipoEntregaTexto}
+        </p>
 
-                    <div>
-                        <strong>
-                            Itens:
-                        </strong>
+        <div>
+          <strong>
+            Itens:
+          </strong>
 
-                        <ul>
-                            ${itensHtml}
-                        </ul>
-                    </div>
+          <ul>
+            ${itensHtml}
+          </ul>
+        </div>
 
-                    <div
-                        class="resumo-linha resumo-total"
-                    >
+        <div
+          class="resumo-linha resumo-total"
+        >
 
-                        <span>
-                            Total
-                        </span>
+          <span>
+            Total
+          </span>
 
-                        <strong>
-                            ${formatarMoeda(pedido.total)}
-                        </strong>
+          <strong>
+            ${formatarMoeda(
+              pedido.total,
+            )}
+          </strong>
 
-                    </div>
-                `;
+        </div>
+      `;
 
-      listaPedidos.appendChild(card);
+      listaPedidos.appendChild(
+        card,
+      );
     });
 }
 
