@@ -3,10 +3,10 @@ import {
   configurarInterfaceAutenticada,
 } from "./auth.js";
 
-import { Produto } from "./models/Produto.js";
 import { Carrinho } from "./models/Carrinho.js";
 import { Pedido } from "./models/Pedido.js";
 import { Gerenciador } from "./Gerenciador.js";
+import { criarProdutosIniciais } from "./dadosIniciais.js";
 
 // =========================================================
 // CONTROLE DE ACESSO
@@ -98,84 +98,6 @@ let categoriaAtual = "Todos";
 let indiceCarrossel = 0;
 let intervaloCarrossel = null;
 let acaoConfirmacao = null;
-
-// =========================================================
-// PRODUTOS INICIAIS
-// =========================================================
-
-const produtosIniciais = [
-  new Produto(
-    1,
-    "Hambúrguer Artesanal",
-    "Hambúrguer artesanal com queijo, alface e tomate.",
-    29.9,
-    "Lanches",
-    "../img/hamburguer.jpg",
-  ),
-
-  new Produto(
-    2,
-    "Pizza Especial",
-    "Pizza preparada com ingredientes selecionados.",
-    35.0,
-    "Pizzas",
-    "../img/pizza.jpg",
-  ),
-
-  new Produto(
-    3,
-    "Macarrão à Bolonhesa",
-    "Massa artesanal com molho de tomate e carne.",
-    32.9,
-    "Massas",
-    "../img/macarrao_bolonhesa.jpg",
-  ),
-
-  new Produto(
-    4,
-    "Peixe Assado",
-    "Peixe assado acompanhado de legumes frescos.",
-    42.9,
-    "Pratos Principais",
-    "../img/peixe_assado.jpg",
-  ),
-
-  new Produto(
-    5,
-    "Beef Wellington",
-    "Carne preparada com massa crocante e recheio especial.",
-    59.9,
-    "Carnes",
-    "../img/beef_wellington.jpg",
-  ),
-
-  new Produto(
-    6,
-    "Salada de Frango",
-    "Salada fresca com frango grelhado e vegetais.",
-    25.9,
-    "Saladas",
-    "../img/salada_de_frango.jpg",
-  ),
-
-  new Produto(
-    7,
-    "Pudim Individual",
-    "Pudim cremoso servido em porção individual.",
-    12.9,
-    "Sobremesas",
-    "../img/pudim_individual.jpg",
-  ),
-
-  new Produto(
-    8,
-    "Sorvete de Frutas Vermelhas",
-    "Sorvete cremoso com calda de frutas vermelhas.",
-    14.9,
-    "Sobremesas",
-    "../img/sorvete_frutas_vermelhas.jpg",
-  ),
-];
 
 // =========================================================
 // FUNÇÕES AUXILIARES
@@ -297,15 +219,23 @@ function carregarCarrinho() {
 // =========================================================
 
 function carregarProdutosIniciais() {
-  const produtosExistentes = gerenciador.listarProdutos();
+  const produtos =
+    gerenciador.listarProdutos();
 
-  if (produtosExistentes.length > 0) {
+  if (produtos.length > 0) {
     return;
   }
 
-  produtosIniciais.forEach((produto) => {
-    gerenciador.adicionarProduto(produto);
-  });
+  const produtosIniciais =
+    criarProdutosIniciais();
+
+  produtosIniciais.forEach(
+    (produto) => {
+      gerenciador.adicionarProduto(
+        produto,
+      );
+    },
+  );
 }
 
 // =========================================================
