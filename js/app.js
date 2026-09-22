@@ -317,6 +317,7 @@ function renderizarProdutos() {
                         class="btn btn-principal"
                         type="button"
                         data-produto-id="${produto.id}"
+                        aria-label="Adicionar ${produto.nome} ao carrinho"
                     >
                         Adicionar ao carrinho
                     </button>
@@ -356,9 +357,22 @@ function renderizarFiltros() {
 
     botao.className = "btn-filtro";
 
-    if (categoria === categoriaAtual) {
+    const filtroAtivo =
+      categoria === categoriaAtual;
+
+    if (filtroAtivo) {
       botao.classList.add("ativo");
     }
+
+    botao.setAttribute(
+      "aria-pressed",
+      String(filtroAtivo),
+    );
+
+    botao.setAttribute(
+      "aria-label",
+      `Filtrar cardápio por ${categoria}`,
+    );
 
     botao.textContent = categoria;
 
@@ -503,6 +517,7 @@ function renderizarCarrinho() {
                     class="btn-remover"
                     type="button"
                     data-remover="${produto.id}"
+                    aria-label="Remover ${produto.nome} do carrinho"
                 >
                     Remover
                 </button>
@@ -1070,6 +1085,7 @@ function renderizarCarrossel() {
                     class="btn btn-principal btn-slide-adicionar"
                     type="button"
                     data-slide-adicionar="${produto.id}"
+                    aria-label="Adicionar ${produto.nome} ao carrinho"
                 >
                     Adicionar ao carrinho
                 </button>

@@ -447,15 +447,16 @@ function renderizarProdutos() {
                         class="btn-editar"
                         type="button"
                         data-editar="${produto.id}"
+                        aria-label="Editar ${produto.nome}"
                     >
                         Editar
                     </button>
-
 
                     <button
                         class="btn-excluir"
                         type="button"
                         data-excluir="${produto.id}"
+                        aria-label="Excluir ${produto.nome}"
                     >
                         Excluir
                     </button>
@@ -601,6 +602,7 @@ function renderizarPedidos() {
                             <select
                                 class="select-status"
                                 data-status="${pedido.id}"
+                                aria-label="Alterar status do pedido ${pedido.id}"
                             >
 
                                 <option
@@ -646,6 +648,7 @@ function renderizarPedidos() {
                             class="btn-excluir"
                             type="button"
                             data-excluir-pedido="${pedido.id}"
+                            aria-label="Excluir pedido ${pedido.id}"
                         >
                             Excluir pedido
                         </button>

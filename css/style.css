@@ -2096,7 +2096,7 @@ a {
 }
 
 .mensagem-login.erro {
-    color: var(--cor-perigo);
+    color: var(--cor-erro);
 }
 
 .mensagem-login.visivel {
