@@ -30,7 +30,7 @@ const carrinho =
   new Carrinho();
 
 const CHAVE_CARRINHO =
-  "restaurante_carrinho";
+  `restaurante_carrinho_${usuarioAtual.id}`;
 
 // =========================================================
 // ELEMENTOS DA PÁGINA

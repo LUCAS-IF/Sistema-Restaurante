@@ -20,18 +20,22 @@ export class Pedido {
   ) {
     this.#id = id;
 
-    this.#cliente = String(cliente || "").trim();
+    this.#cliente =
+      String(cliente || "").trim();
 
     this.#clienteId =
-      clienteId !== null && clienteId !== undefined
+      clienteId !== null &&
+      clienteId !== undefined
         ? String(clienteId)
         : null;
 
     this.#itens = [...itens];
 
-    this.#tipoEntrega = tipoEntrega;
+    this.#tipoEntrega =
+      tipoEntrega;
 
-    this.#total = Number(total);
+    this.#total =
+      Number(total);
 
     this.#data = data;
 
@@ -85,7 +89,8 @@ export class Pedido {
       );
     }
 
-    this.#status = novoStatus;
+    this.#status =
+      novoStatus;
   }
 
   toJSON() {
@@ -94,7 +99,8 @@ export class Pedido {
       cliente: this.#cliente,
       clienteId: this.#clienteId,
       itens: this.#itens,
-      tipoEntrega: this.#tipoEntrega,
+      tipoEntrega:
+        this.#tipoEntrega,
       total: this.#total,
       data: this.#data,
       status: this.#status,
